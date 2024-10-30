@@ -1,34 +1,46 @@
 package com.abutua.product_backend.controllers;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.abutua.product_backend.models.Product;
+
+import jakarta.annotation.PostConstruct;
 
 @RestController
 public class ProductController {
     
-    @GetMapping("product")
-    public Product getProduct(){
-        Product p = new Product(1, "product 1", 1);
+    private ArrayList<Product> products = new ArrayList<>();
 
-        return p;
-    }
-
-    @GetMapping("products")
-    public List<Product> getProducts(){
+    @PostConstruct
+    public void init(){
         Product p1 = new Product(1, "product 1", 1);
         Product p2 = new Product(2, "product 2", 2);
         Product p3 = new Product(3, "product 3", 3);
+        products.add(p1);
+        products.add(p2);
+        products.add(p3);
+    }
 
-        List<Product> listProd = new ArrayList<Product>();
-        listProd.add(p1);
-        listProd.add(p2);
-        listProd.add(p3);
+    @GetMapping("products/{id}")
+    public ResponseEntity<Product> getProduct(@PathVariable int id){
 
-        return listProd;
+        if(id <= products.size() && id > 0){
+            return ResponseEntity.ok(products.get(id-1));
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+    }
+
+    @GetMapping("products")
+    public ArrayList<Product> getProducts(){ 
+        return products;
     }
 }
