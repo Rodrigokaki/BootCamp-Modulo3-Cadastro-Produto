@@ -31,12 +31,18 @@ public class ProductController {
     @GetMapping("products/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable int id){
 
-        if(id <= products.size() && id > 0){
-            return ResponseEntity.ok(products.get(id-1));
-        }
-        else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
-        }
+        // if(id <= products.size() && id > 0){
+        //     return ResponseEntity.ok(products.get(id-1));
+        // }
+        // else{
+        //     throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        // }
+
+        Product prod = products.stream()
+                                .filter(p -> p.getId() == id).findFirst()
+                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+
+        return ResponseEntity.ok(prod);
     }
 
     @GetMapping("products")
