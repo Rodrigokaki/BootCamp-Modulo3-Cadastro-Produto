@@ -1,6 +1,7 @@
 package com.abutua.product_backend.controllers;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,22 +12,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.abutua.product_backend.models.Product;
 
-import jakarta.annotation.PostConstruct;
-
 @RestController
 public class ProductController {
     
-    private ArrayList<Product> products = new ArrayList<>();
-
-    @PostConstruct
-    public void init(){
-        Product p1 = new Product(1, "product 1", 1);
-        Product p2 = new Product(2, "product 2", 2);
-        Product p3 = new Product(3, "product 3", 3);
-        products.add(p1);
-        products.add(p2);
-        products.add(p3);
-    }
+    private List<Product> products = Arrays.asList( new Product(1, "product 1", 1),
+                                                    new Product(2, "product 2", 2),
+                                                    new Product(3, "product 3", 3));
 
     @GetMapping("products/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable int id){
@@ -46,7 +37,7 @@ public class ProductController {
     }
 
     @GetMapping("products")
-    public ArrayList<Product> getProducts(){ 
+    public List<Product> getProducts(){ 
         return products;
     }
 }
