@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import com.abutua.product_backend.models.Category;
 import com.abutua.product_backend.models.Product;
 
 @RestController
+@CrossOrigin
 public class ProductController {
     private List<Category> categories = Arrays.asList( 
         new Category(1, "Produção Própria"),

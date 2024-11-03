@@ -1,38 +1,4 @@
-var products = [
-  {
-    id: 1,
-    name: "Computador M1-TX",
-    description: "Intel I7, 16GB, SSD 256, HD 1T",
-    price: 4900,
-    category: 2,
-    promotion: true,
-    new: true,
-  },
-  {
-    id: 2,
-    name: "Computador M2-TX",
-    description: "Intel I7, 32GB, SSD 512, HD 1T",
-    price: 5900,
-    category: 3,
-    promotion: false,
-    new: true,
-  },
-  {
-    id: 3,
-    name: "Computador M1-T",
-    description: "Intel I5, 16GB, HD 1T",
-    price: 2900,
-    category: 1,
-    promotion: false,
-    new: false,
-  },
-];
-
-var categories = [
-  { id: 1, name: "Produção Própria" },
-  { id: 2, name: "Nacional" },
-  { id: 3, name: "Importado" },
-];
+var products = [];
 
 //format price
 var formatter = new Intl.NumberFormat('pt-BR', {
@@ -49,9 +15,11 @@ loadProducts();
 
 //load all products
 function loadProducts(){
-    for(let prod of products){
+  $.getJSON("http://localhost:8080/products", (response) => {
+    for(let prod of response){
         addNewRow(prod);
     }
+  })
 }
 
 //save product
@@ -94,11 +62,11 @@ function addNewRow(prod){
     var priceNode = document.createTextNode(formatter.format(prod.price));
     newRow.insertCell().appendChild(priceNode);
 
-    var categoryNode = document.createTextNode(categories[prod.category-1].name);
+    var categoryNode = document.createTextNode(prod.category.name);
     newRow.insertCell().appendChild(categoryNode);
 
     var options = '';
-    if(prod.new){
+    if(prod.newProduct){
         options = '<span class="badge bg-primary me-1">L</span>'
     }
 
