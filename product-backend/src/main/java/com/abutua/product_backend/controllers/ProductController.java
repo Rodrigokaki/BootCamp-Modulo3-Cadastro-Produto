@@ -10,14 +10,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.abutua.product_backend.models.Category;
 import com.abutua.product_backend.models.Product;
 
 @RestController
 public class ProductController {
-    
-    private List<Product> products = Arrays.asList( new Product(1, "product 1", 1),
-                                                    new Product(2, "product 2", 2),
-                                                    new Product(3, "product 3", 3));
+    private List<Category> categories = Arrays.asList( 
+        new Category(1, "Produção Própria"),
+        new Category(2, "Nacional"),
+        new Category(3, "Importado")
+    );
+
+    private List<Product> products = Arrays.asList( 
+        new Product(1, "product 1","Description 1", 1, false, false, categories.get(0)),
+        new Product(2, "product 2", "Description 2", 2, true, false, categories.get(1)),
+        new Product(3, "product 3", "Description 3", 3, false, true, categories.get(2))
+    );
 
     @GetMapping("products/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable int id){
