@@ -16,7 +16,8 @@ loadProducts();
 //load all products
 function loadProducts(){
   $.getJSON("http://localhost:8080/products", (response) => {
-    for(let prod of response){
+    products = response;
+    for(let prod of products){
         addNewRow(prod);
     }
   })
