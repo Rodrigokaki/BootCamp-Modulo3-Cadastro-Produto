@@ -1,5 +1,7 @@
 var products = [];
 
+var categories = [];
+
 //format price
 var formatter = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -11,7 +13,20 @@ function convertToNumber(priceFormat){
   return priceFormat.replace(/\./g, '').replace(',', '.');
 }
 
+//On init
 loadProducts();
+loadCategories();
+
+//Load all categories
+function loadCategories(){
+  $.getJSON("http://localhost:8080/categories", (response) => {
+    categories = response;
+    for(let cat of categories){
+      document.getElementById("selectCategory").innerHTML += 
+      `<option value="${cat.id}">${cat.name}</option>`
+    }
+  })
+}
 
 //load all products
 function loadProducts(){

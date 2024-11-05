@@ -20,13 +20,15 @@ public class ProductController {
     private List<Category> categories = Arrays.asList( 
         new Category(1, "Produção Própria"),
         new Category(2, "Nacional"),
-        new Category(3, "Importado")
+        new Category(3, "Importado"),
+        new Category(4, "Premium")
     );
 
     private List<Product> products = Arrays.asList( 
         new Product(1, "product 1","Description 1", 1, false, false, categories.get(0)),
         new Product(2, "product 2", "Description 2", 2, true, false, categories.get(1)),
-        new Product(3, "product 3", "Description 3", 3, false, true, categories.get(2))
+        new Product(3, "product 3", "Description 3", 3, false, true, categories.get(2)),
+        new Product(4, "product 4", "Description 4", 4, true, true, categories.get(3))
     );
 
     @GetMapping("products/{id}")
