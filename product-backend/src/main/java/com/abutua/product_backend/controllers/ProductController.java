@@ -1,6 +1,7 @@
 package com.abutua.product_backend.controllers;
 
-import java.util.Arrays;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -8,28 +9,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.abutua.product_backend.models.Category;
 import com.abutua.product_backend.models.Product;
 
 @RestController
 @CrossOrigin
 public class ProductController {
-    private List<Category> categories = Arrays.asList( 
-        new Category(1, "Produção Própria"),
-        new Category(2, "Nacional"),
-        new Category(3, "Importado"),
-        new Category(4, "Premium")
-    );
+    // private List<Category> categories = Arrays.asList( 
+    //     new Category(1, "Produção Própria"),
+    //     new Category(2, "Nacional"),
+    //     new Category(3, "Importado"),
+    //     new Category(4, "Premium")
+    // );
 
-    private List<Product> products = Arrays.asList( 
-        new Product(1, "product 1","Description 1", 1, false, false, categories.get(0)),
-        new Product(2, "product 2", "Description 2", 2, true, false, categories.get(1)),
-        new Product(3, "product 3", "Description 3", 3, false, true, categories.get(2)),
-        new Product(4, "product 4", "Description 4", 4, true, true, categories.get(3))
-    );
+    private List<Product> products = new ArrayList<>();
+    
 
     @GetMapping("products/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable int id){
@@ -51,5 +50,19 @@ public class ProductController {
     @GetMapping("products")
     public List<Product> getProducts(){ 
         return products;
+    }
+
+    @PostMapping("products")
+    public ResponseEntity<Product> saveProduct(@RequestBody Product product){
+        product.setId(products.size()+1);
+        products.add(product);
+
+        URI location = ServletUriComponentsBuilder
+        .fromCurrentRequest()
+        .path("/{id}")
+        .buildAndExpand(product.getId())
+        .toUri();
+
+        return ResponseEntity.created(location).body(product);
     }
 }
