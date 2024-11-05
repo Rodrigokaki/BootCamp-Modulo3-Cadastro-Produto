@@ -46,15 +46,23 @@ function save(){
     name: document.getElementById("name").value,
     description: document.getElementById("description").value,
     price: convertToNumber(document.getElementById("price").value),
-    category: document.getElementById("selectCategory").value,
+    category: categories[document.getElementById("selectCategory").value - 1],
     promotion: document.getElementById("checkBoxPromotion").checked,
-    new: document.getElementById("checkBoxNewProduct").checked,
+    newProduct: document.getElementById("checkBoxNewProduct").checked,
   }
 
-  addNewRow(prod);
-  products.push(prod);
-
-  document.getElementById("formProduct").reset();
+  $.ajax({
+    url:"http://localhost:8080/products",
+    type: "POST",
+    async: true,
+    contentType: "application/json",
+    data: JSON.stringify(prod),
+    success: (product) => {
+      addNewRow(product);
+      products.push(product);
+      document.getElementById("formProduct").reset();
+    }
+  })
 
 }
 
